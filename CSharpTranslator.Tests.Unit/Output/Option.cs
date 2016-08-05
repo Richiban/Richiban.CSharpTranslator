@@ -5,22 +5,32 @@ namespace CSharpTranslator.Tests.Unit.Output
 
 public class Option
 {
-	protected enum Case
+	private enum Case
 	{
 		None, Some
 	}
 
-	protected Case Discriminator { get; }
-	protected object[] Items { get; }
+	private Case Discriminator { get; }
+	private object[] Items { get; }
 	
-	protected Option(Case discriminator, params object[] items)
+	private Option(Case discriminator, params object[] items)
 	{
 		Discriminator = discriminator;
 		Items = items;
 	}
 
-	private string ItemsToString() => Items.Length == 0 ? "" : $"({String.Join(",", Items)})";
-    public override string ToString() => $"{Discriminator}{ItemsToString()}";
+	public override string ToString()
+	{
+		if (this.IsNone())
+			return "None";
+			
+		object Some_0;
+        if (this.IsSome(out Some_0))
+			return $"Some({Items[0]})";
+			
+		return "";
+	}
+
 
 	public static readonly Option None = new Option(Case.None);
 	public bool IsNone() => Discriminator == Case.None;
@@ -75,7 +85,7 @@ public class Option
 		if (otherOption.IsNone() && this.IsNone())
 			return true;
 			
-		object otherSome_0; 
+		object otherSome_0;
 		if (otherOption.IsSome(out otherSome_0) && this.IsSome(otherSome_0))
 			return true;
 			

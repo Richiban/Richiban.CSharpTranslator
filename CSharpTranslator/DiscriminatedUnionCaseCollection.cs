@@ -15,7 +15,7 @@ namespace CSharpTranslator
         }
 
         public string AsEnum() =>
-            $@"	protected enum Case
+            $@"	private enum Case
 	{{
 		{String.Join(", ", Cases.Select(@case => @case.CaseName))}
 	}}";
@@ -25,5 +25,8 @@ namespace CSharpTranslator
 
         public string GetEqualityComparisons(string otherVariableName) =>
             String.Join("", Cases.Select(@case => @case.GetEqualityComparison(otherVariableName)));
+
+        public string GetToStrings() =>
+            String.Join("", Cases.Select(@case => @case.GetToString()));
     }
 }

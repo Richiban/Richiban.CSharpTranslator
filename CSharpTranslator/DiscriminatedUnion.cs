@@ -9,7 +9,7 @@ namespace CSharpTranslator
         public string Name { get; }
         public DiscriminatedUnionCaseCollection Cases { get; }
         public Constructor Constructor { get; }
-        public ToStringMethodCollection ToStringMethods { get; } = new ToStringMethodCollection();
+        public ToStringMethod ToStringMethods { get; }
         public GetHashCodeMethod GetHashCodeMethod { get; } = new GetHashCodeMethod();
         public EqualsMethod EqualsMethod { get; }
 
@@ -18,6 +18,7 @@ namespace CSharpTranslator
             Name = name;
             Cases = new DiscriminatedUnionCaseCollection(cases);
             Constructor = new Constructor(name);
+            ToStringMethods = new ToStringMethod(name, Cases);
             EqualsMethod = new EqualsMethod(Name, Cases);
         }
 
@@ -26,8 +27,8 @@ public class {Name}
 {{
 {Cases.AsEnum()}
 
-	protected Case Discriminator {{ get; }}
-	protected object[] Items {{ get; }}
+	private Case Discriminator {{ get; }}
+	private object[] Items {{ get; }}
 	
 {Constructor}
 

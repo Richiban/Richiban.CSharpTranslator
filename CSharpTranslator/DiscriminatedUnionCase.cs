@@ -13,5 +13,7 @@ namespace CSharpTranslator
         public abstract string CreateAndDestructureMethod();
 
         public abstract string GetEqualityComparison(string otherVariableName);
+
+        public abstract string GetToString();
     }
 }

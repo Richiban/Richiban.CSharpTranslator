@@ -5,22 +5,40 @@ namespace CSharpTranslator.Tests.Unit.Output
 
 public class Shape
 {
-	protected enum Case
+	private enum Case
 	{
 		Point, Line, Square, Cube
 	}
 
-	protected Case Discriminator { get; }
-	protected object[] Items { get; }
+	private Case Discriminator { get; }
+	private object[] Items { get; }
 	
-	protected Shape(Case discriminator, params object[] items)
+	private Shape(Case discriminator, params object[] items)
 	{
 		Discriminator = discriminator;
 		Items = items;
 	}
 
-	private string ItemsToString() => Items.Length == 0 ? "" : $"({String.Join(",", Items)})";
-    public override string ToString() => $"{Discriminator}{ItemsToString()}";
+	public override string ToString()
+	{
+		if (this.IsPoint())
+			return "Point";
+			
+		int LineLength;
+        if (this.IsLine(out LineLength))
+			return $"Line(Length: {Items[0]})";
+			
+		int SquareWidth;int SquareHeight;
+        if (this.IsSquare(out SquareWidth, out SquareHeight))
+			return $"Square(Width: {Items[0]}, Height: {Items[1]})";
+			
+		int CubeWidth;int CubeHeight;int CubeDepth;
+        if (this.IsCube(out CubeWidth, out CubeHeight, out CubeDepth))
+			return $"Cube(Width: {Items[0]}, Height: {Items[1]}, Depth: {Items[2]})";
+			
+		return "";
+	}
+
 
 	public static readonly Shape Point = new Shape(Case.Point);
 	public bool IsPoint() => Discriminator == Case.Point;
@@ -335,15 +353,15 @@ public class Shape
 		if (otherShape.IsPoint() && this.IsPoint())
 			return true;
 			
-		int otherLineLength; 
+		int otherLineLength;
 		if (otherShape.IsLine(out otherLineLength) && this.IsLine(otherLineLength))
 			return true;
 			
-		int otherSquareWidth; int otherSquareHeight; 
+		int otherSquareWidth;int otherSquareHeight;
 		if (otherShape.IsSquare(out otherSquareWidth, out otherSquareHeight) && this.IsSquare(otherSquareWidth, otherSquareHeight))
 			return true;
 			
-		int otherCubeWidth; int otherCubeHeight; int otherCubeDepth; 
+		int otherCubeWidth;int otherCubeHeight;int otherCubeDepth;
 		if (otherShape.IsCube(out otherCubeWidth, out otherCubeHeight, out otherCubeDepth) && this.IsCube(otherCubeWidth, otherCubeHeight, otherCubeDepth))
 			return true;
 			

@@ -18,11 +18,9 @@ namespace CSharpTranslator
             return new OutDestructureMethodParameter(arg.Position, arg.Name, arg.Type);
         }
 
-        public DestructureMethodCollection(
-            string caseName,
-            IReadOnlyCollection<DiscriminatedUnionCaseArgument> arguments)
+        public DestructureMethodCollection(DiscriminatedUnionCaseArgumentCollection arguments)
         {
-            DestructureMethods = GetDestructureMethods(caseName, arguments).ToList().AsReadOnly();
+            DestructureMethods = GetDestructureMethods(arguments.CaseName, arguments.Arguments).ToList().AsReadOnly();
         }
 
         public IReadOnlyCollection<DestructureMethod> DestructureMethods { get; }

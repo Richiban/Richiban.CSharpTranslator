@@ -53,9 +53,9 @@ namespace CSharpTranslator.Tests.Unit
         [Test]
         public void ToString_on_Some_returns_string_representation_of_enclosed_value()
         {
-            var value = Guid.NewGuid();
-            var expectedResult = value.ToString();
-            var option = Option.Some(value);
+            var enclosedValue = Guid.NewGuid();
+            var expectedResult = $"Some({enclosedValue})";
+            var option = Option.Some(enclosedValue);
             
             var actual = option.ToString();
 
@@ -66,7 +66,7 @@ namespace CSharpTranslator.Tests.Unit
         public void ToString_on_None_returns_string_representation_of_None()
         {
             var option = Option.None;
-            var expectedResult = "<none>";
+            var expectedResult = "None";
             var actual = option.ToString();
 
             Assert.That(actual, Is.EqualTo(expectedResult));
@@ -79,24 +79,6 @@ namespace CSharpTranslator.Tests.Unit
             var rightNone = Option.None;
 
             Assert.That(leftNone.Equals(rightNone));
-        }
-
-        [Test]
-        public void Equals_returns_false_for_None_with_different_type_argument()
-        {
-            var leftNone = Option.None;
-            var rightNone = Option.None;
-
-            Assert.False(leftNone.Equals(rightNone));
-        }
-
-        [Test]
-        public void Equals_returns_true_for_None_when_compared_with_null()
-        {
-            var leftNone = Option.None;
-            var rightNone = (Option) null;
-
-            Assert.True(leftNone.Equals(rightNone));
         }
 
         [Test]
@@ -124,16 +106,6 @@ namespace CSharpTranslator.Tests.Unit
         {
             var leftNone = Option.Some(new object());
             var rightNone = Option.Some(new object());
-
-            Assert.False(leftNone.Equals(rightNone));
-        }
-
-        [Test]
-        public void Equals_returns_false_for_Some_with_different_type_argument()
-        {
-            var enclosedValue = Guid.NewGuid().ToString();
-            var leftNone = Option.Some(enclosedValue);
-            var rightNone = Option.Some(enclosedValue);
 
             Assert.False(leftNone.Equals(rightNone));
         }

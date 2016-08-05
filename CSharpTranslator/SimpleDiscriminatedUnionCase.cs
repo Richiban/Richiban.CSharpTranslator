@@ -18,5 +18,11 @@ namespace CSharpTranslator
 			return true;
 			
 ";
+
+        public override string GetToString() =>
+            $@"		if (this.Is{CaseName}())
+			return ""{CaseName}"";
+			
+";
     }
 }

@@ -5,6 +5,7 @@ namespace CSharpTranslator
         public int Position { get; }
         public string CaseName { get; }
         public string Name { get; }
+        public bool IsAnonymous { get; }
         public string Type { get; }
 
         public DiscriminatedUnionCaseArgument(string caseName, int position, string name, string type)
@@ -13,37 +14,43 @@ namespace CSharpTranslator
             Name = name;
             Type = type;
             CaseName = caseName;
+            IsAnonymous = false;
         }
 
-        public DiscriminatedUnionCaseArgument(string caseName, int position, string type) : this(caseName, position, $"_{position}", type)
+        public DiscriminatedUnionCaseArgument(string caseName, int position, string type)
         {
+            Position = position;
+            Name = $"_{position}";
+            Type = type;
+            CaseName = caseName;
+            IsAnonymous = true;
         }
-
-        public string OtherOutVariableName => $"other{CaseName}{Name}";
-        public string ThisOutVariableName => $"this{Name}";
 
         public string Definition => $"{Type} {Name}";
-        public string OutDefinition => $"out {Type} {Name}";
+        public string OutArgumentDeclaration => $"{Type} {CaseName}{Name};";
+        public string OutParameterDeclaration => $"out {Type} {Name}";
 
-        public string OtherOutVariableDeclaration =>
-            $"{Type} {OtherOutVariableName}; ";
+        public string OtherOutVariableDeclaration => $"{Type} other{CaseName}{Name};";
 
         public string ThisOutVariableDeclaration =>
-            $"{Type} {ThisOutVariableName}; ";
+            $"{Type} this{CaseName}{Name}; ";
 
         public string OtherOutVariableUsage =>
-            $"out {OtherOutVariableName}";
+            $"out other{CaseName}{Name}";
 
         public string OtherOutVariableReference =>
-            $"{OtherOutVariableName}";
+            $"other{CaseName}{Name}";
 
         public string ThisOutVariableUsage =>
-            $"{Type} {OtherOutVariableName}; {Type} {ThisOutVariableName}; ";
+            $"{Type} other{CaseName}{Name}; {Type} this{CaseName}{Name}; ";
 
         public string Comparison => $"({Type})Items[{Position}] == {Name}";
 
         public string OutVariableAssignment => $"{Name} = ({Type})Items[{Position}];";
         public string OutVariableDefaultAssignment => $"{Name} = default({Type});";
-        public string OutUsage => $"out {Name}";
+        public string OutVariableUsage => $"out {CaseName}{Name}";
+
+        public string ToStringRepresentation => 
+            (IsAnonymous) ? $"{{Items[{Position}]}}" : $"{Name}: {{Items[{Position}]}}";
     }
 }

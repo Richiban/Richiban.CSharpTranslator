@@ -10,7 +10,7 @@ namespace CSharpTranslator
         }
 
         public override string ToString() =>
-            $@"	protected {Name}(Case discriminator, params object[] items)
+            $@"	private {Name}(Case discriminator, params object[] items)
 	{{
 		Discriminator = discriminator;
 		Items = items;

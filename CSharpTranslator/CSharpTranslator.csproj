@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnonymousDiscriminatedUnionCaseArgumentCollection.cs" />
     <Compile Include="DestructureMethod.cs" />
     <Compile Include="DestructureMethodCollection.cs" />
     <Compile Include="DestructureMethodParameter.cs" />
@@ -51,14 +52,16 @@
     <Compile Include="Constructor.cs" />
     <Compile Include="DiscriminatedUnionCase.cs" />
     <Compile Include="DiscriminatedUnionCaseArgument.cs" />
+    <Compile Include="DiscriminatedUnionCaseArgumentCollection.cs" />
     <Compile Include="DiscriminatedUnionCaseCollection.cs" />
     <Compile Include="DiscriminatedUnionCaseWithArguments.cs" />
     <Compile Include="EqualsMethod.cs" />
     <Compile Include="GetHashCodeMethod.cs" />
+    <Compile Include="NamedDiscriminatedUnionCaseArgumentCollection.cs" />
     <Compile Include="OutDestructureMethodParameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleDiscriminatedUnionCase.cs" />
-    <Compile Include="ToStringMethodCollection.cs" />
+    <Compile Include="ToStringMethod.cs" />
     <Compile Include="ValueDestructureMethodParameter.cs" />
   </ItemGroup>
   <ItemGroup>
