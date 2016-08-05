@@ -13,18 +13,39 @@ namespace CSharpTranslator
         public DiscriminatedUnionCaseWithArguments(
             string caseName,
             string typeName,
-            DiscriminatedUnionCaseArgument firstArgument,
-            params DiscriminatedUnionCaseArgument[] furtherArguments) : base(caseName, typeName)
+            Tuple<string, string> firstArgumentNameAndType,
+            params Tuple<string, string>[] furtherArguments) : base(caseName, typeName)
         {
+            var allArguments = new[] { firstArgumentNameAndType }.Concat(furtherArguments).ToList();
+
             Arguments =
                 new ReadOnlyCollection<DiscriminatedUnionCaseArgument>(
-                    new[] { firstArgument }.Union(furtherArguments).ToArray());
+                    allArguments.Zip(
+                        Enumerable.Range(0, allArguments.Count),
+                        (t, i) => new DiscriminatedUnionCaseArgument(caseName, i, t.Item1, t.Item2)).ToArray());
+
+            DestructureMethods = new DestructureMethodCollection(caseName, Arguments);
+        }
+
+        public DiscriminatedUnionCaseWithArguments(
+            string caseName,
+            string typeName,
+            string firstArgumentType,
+            params string[] furtherArguments) : base(caseName, typeName)
+        {
+            var allArguments = new[] { firstArgumentType }.Concat(furtherArguments).ToList();
+
+            Arguments =
+                new ReadOnlyCollection<DiscriminatedUnionCaseArgument>(
+                    allArguments.Zip(
+                        Enumerable.Range(0, allArguments.Count),
+                        (s, i) => new DiscriminatedUnionCaseArgument(caseName, i, s)).ToArray());
 
             DestructureMethods = new DestructureMethodCollection(caseName, Arguments);
         }
 
         public override string CreateAndDestructureMethod()
-            => $@"	{CreateMethod}
+            => $@"{CreateMethod}
 {String.Join("\r\n", DestructureMethods.DestructureMethods)}
 	
 ";

@@ -21,13 +21,13 @@ namespace CSharpTranslator
 		{{
             var result = true;
 
-            {IfDestructuringSucceeds}
+{IfDestructuringSucceeds}
 
             return result;
 		}}
 		else
 		{{
-            {IfDestructuringFails}
+{IfDestructuringFails}
 
 			return false;
 		}}

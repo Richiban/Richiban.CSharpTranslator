@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using NUnit.Framework;
 
 namespace CSharpTranslator.Tests.Generator
@@ -7,19 +8,39 @@ namespace CSharpTranslator.Tests.Generator
     public class Gen
     {
         [Test]
-        public void CreateCompassType()
+        public void CreateShapeType()
         {
-            var typeName = "Compass";
+            var typeName = "Shape";
 
             var du = new DiscriminatedUnion(
                 typeName,
-                new SimpleDiscriminatedUnionCase("North", typeName),
-                new SimpleDiscriminatedUnionCase("South", typeName),
+                new SimpleDiscriminatedUnionCase("Point", typeName),
+                new DiscriminatedUnionCaseWithArguments("Line", typeName, Tuple.Create("Length", "int")),
                 new DiscriminatedUnionCaseWithArguments(
-                    "Elsewhere",
+                    "Square",
                     typeName,
-                    new DiscriminatedUnionCaseArgument(0, "IsEast", "bool"),
-                    new DiscriminatedUnionCaseArgument(1, "IsWest", "bool")));
+                    Tuple.Create("Width", "int"),
+                    Tuple.Create("Height", "int")),
+                new DiscriminatedUnionCaseWithArguments(
+                    "Cube",
+                    typeName,
+                    Tuple.Create("Width", "int"),
+                    Tuple.Create("Height", "int"),
+                    Tuple.Create("Depth", "int")));
+
+            var typeDefinition = du.ToString();
+            WriteToFile(typeName, typeDefinition);
+        }
+
+        [Test]
+        public void CreateOptionType()
+        {
+            var typeName = "Option";
+
+            var du = new DiscriminatedUnion(
+                typeName,
+                new SimpleDiscriminatedUnionCase("None", typeName),
+                new DiscriminatedUnionCaseWithArguments("Some", typeName, "object"));
 
             var typeDefinition = du.ToString();
             WriteToFile(typeName, typeDefinition);
@@ -31,7 +52,7 @@ namespace CSharpTranslator.Tests.Generator
                 $@"C:\Repositories\Richiban\CSharpTranslator\CSharpTranslator.Tests.Unit\Output\{typeName}.cs";
 
             var fileContents =
-$@"using System;
+                $@"using System;
 
 namespace CSharpTranslator.Tests.Unit.Output
 {{

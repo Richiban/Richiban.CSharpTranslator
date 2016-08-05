@@ -25,6 +25,7 @@ namespace CSharpTranslator
 public class {Name}
 {{
 {Cases.AsEnum()}
+
 	protected Case Discriminator {{ get; }}
 	protected object[] Items {{ get; }}
 	

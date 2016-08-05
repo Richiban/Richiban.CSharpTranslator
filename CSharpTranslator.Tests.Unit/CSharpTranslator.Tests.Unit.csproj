@@ -44,8 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CompassTests.cs" />
-    <Compile Include="Output\Compass.cs" />
+    <Compile Include="ShapeTests.cs" />
+    <Compile Include="OptionTests.cs" />
+    <Compile Include="Output\Option.cs" />
+    <Compile Include="Output\Shape.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

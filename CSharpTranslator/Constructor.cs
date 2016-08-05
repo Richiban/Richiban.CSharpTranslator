@@ -14,7 +14,6 @@ namespace CSharpTranslator
 	{{
 		Discriminator = discriminator;
 		Items = items;
-	}}
-";
+	}}";
     }
 }

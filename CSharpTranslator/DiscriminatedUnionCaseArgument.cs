@@ -3,21 +3,23 @@ namespace CSharpTranslator
     public class DiscriminatedUnionCaseArgument
     {
         public int Position { get; }
+        public string CaseName { get; }
         public string Name { get; }
         public string Type { get; }
 
-        public DiscriminatedUnionCaseArgument(int position, string name, string type)
+        public DiscriminatedUnionCaseArgument(string caseName, int position, string name, string type)
         {
             Position = position;
             Name = name;
             Type = type;
+            CaseName = caseName;
         }
 
-        public DiscriminatedUnionCaseArgument(int position, string type) : this(position, $"_{position}", type)
+        public DiscriminatedUnionCaseArgument(string caseName, int position, string type) : this(caseName, position, $"_{position}", type)
         {
         }
 
-        public string OtherOutVariableName => $"other{Name}";
+        public string OtherOutVariableName => $"other{CaseName}{Name}";
         public string ThisOutVariableName => $"this{Name}";
 
         public string Definition => $"{Type} {Name}";
