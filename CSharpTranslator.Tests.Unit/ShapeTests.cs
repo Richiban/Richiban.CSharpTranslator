@@ -19,7 +19,7 @@ namespace CSharpTranslator.Tests.Unit
         {
             var shape = Shape.Line(5);
 
-            Assert.That(shape.ToString(), Is.EqualTo("Line(Length: 5)"));
+            Assert.That(shape.ToString(), Is.EqualTo("Line(5)"));
         }
 
         [Test]

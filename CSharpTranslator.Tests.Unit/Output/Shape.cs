@@ -24,9 +24,9 @@ public class Shape
 		if (this.IsPoint())
 			return "Point";
 			
-		int LineLength;
-        if (this.IsLine(out LineLength))
-			return $"Line(Length: {Items[0]})";
+		int Line_0;
+        if (this.IsLine(out Line_0))
+			return $"Line({Items[0]})";
 			
 		int SquareWidth;int SquareHeight;
         if (this.IsSquare(out SquareWidth, out SquareHeight))
@@ -43,15 +43,15 @@ public class Shape
 	public static readonly Shape Point = new Shape(Case.Point);
 	public bool IsPoint() => Discriminator == Case.Point;
 	
-	public static Shape Line(int Length) => new Shape(Case.Line, Length);
+	public static Shape Line(int _0) => new Shape(Case.Line, _0);
 
-	public bool IsLine(int Length)
+	public bool IsLine(int _0)
 	{
 		if (Discriminator == Case.Line)
 		{
             var result = true;
 
-			result = result && (int)Items[0] == Length;
+			result = result && (int)Items[0] == _0;
 
             return result;
 		}
@@ -63,19 +63,19 @@ public class Shape
 		}
 	}
 
-	public bool IsLine(out int Length)
+	public bool IsLine(out int _0)
 	{
 		if (Discriminator == Case.Line)
 		{
             var result = true;
 
-			Length = (int)Items[0];
+			_0 = (int)Items[0];
 
             return result;
 		}
 		else
 		{
-			Length = default(int);
+			_0 = default(int);
 
 			return false;
 		}
@@ -353,8 +353,8 @@ public class Shape
 		if (otherShape.IsPoint() && this.IsPoint())
 			return true;
 			
-		int otherLineLength;
-		if (otherShape.IsLine(out otherLineLength) && this.IsLine(otherLineLength))
+		int otherLine_0;
+		if (otherShape.IsLine(out otherLine_0) && this.IsLine(otherLine_0))
 			return true;
 			
 		int otherSquareWidth;int otherSquareHeight;

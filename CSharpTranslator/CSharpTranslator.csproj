@@ -59,6 +59,7 @@
     <Compile Include="GetHashCodeMethod.cs" />
     <Compile Include="NamedDiscriminatedUnionCaseArgumentCollection.cs" />
     <Compile Include="OutDestructureMethodParameter.cs" />
+    <Compile Include="Parser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleDiscriminatedUnionCase.cs" />
     <Compile Include="ToStringMethod.cs" />

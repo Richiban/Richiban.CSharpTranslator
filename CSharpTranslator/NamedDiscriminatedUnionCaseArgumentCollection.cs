@@ -1,5 +1,4 @@
 using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace CSharpTranslator
@@ -8,16 +7,12 @@ namespace CSharpTranslator
     {
         public NamedDiscriminatedUnionCaseArgumentCollection(
             string caseName,
-            Tuple<string, string> firstArgumentNameAndType,
-            params Tuple<string, string>[] furtherArguments)
+            params Tuple<string, string>[] parameterNamesAndTypes)
         {
-            var allArguments = new[] { firstArgumentNameAndType }.Concat(furtherArguments).ToList();
-
-            Arguments =
-                new ReadOnlyCollection<DiscriminatedUnionCaseArgument>(
-                    allArguments.Zip(
-                        Enumerable.Range(0, allArguments.Count),
-                        (t, i) => new DiscriminatedUnionCaseArgument(caseName, i, t.Item1, t.Item2)).ToArray());
+            Parameters =
+                parameterNamesAndTypes.Zip(
+                    Enumerable.Range(0, parameterNamesAndTypes.Length),
+                    (t, i) => new DiscriminatedUnionCaseParameter(caseName, i, t.Item1, t.Item2)).ToList().AsReadOnly();
 
             CaseName = caseName;
         }

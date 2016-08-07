@@ -1,6 +1,6 @@
 namespace CSharpTranslator
 {
-    public class DiscriminatedUnionCaseArgument
+    public class DiscriminatedUnionCaseParameter
     {
         public int Position { get; }
         public string CaseName { get; }
@@ -8,7 +8,7 @@ namespace CSharpTranslator
         public bool IsAnonymous { get; }
         public string Type { get; }
 
-        public DiscriminatedUnionCaseArgument(string caseName, int position, string name, string type)
+        public DiscriminatedUnionCaseParameter(string caseName, int position, string name, string type)
         {
             Position = position;
             Name = name;
@@ -17,7 +17,7 @@ namespace CSharpTranslator
             IsAnonymous = false;
         }
 
-        public DiscriminatedUnionCaseArgument(string caseName, int position, string type)
+        public DiscriminatedUnionCaseParameter(string caseName, int position, string type)
         {
             Position = position;
             Name = $"_{position}";

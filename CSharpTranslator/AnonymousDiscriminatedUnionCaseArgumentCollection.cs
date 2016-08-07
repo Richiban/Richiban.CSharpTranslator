@@ -1,22 +1,17 @@
-using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace CSharpTranslator
 {
-    public class AnonymousDiscriminatedUnionCaseArgumentCollection : DiscriminatedUnionCaseArgumentCollection
+    public class AnonymousDiscriminatedUnionCaseParameterCollection : DiscriminatedUnionCaseArgumentCollection
     {
-        public AnonymousDiscriminatedUnionCaseArgumentCollection(
+        public AnonymousDiscriminatedUnionCaseParameterCollection(
             string caseName,
-            string firstArgumentType,
-            params string[] furtherArguments)
+            params string[] parameterTypes)
         {
-            var allArguments = new[] { firstArgumentType }.Concat(furtherArguments).ToList();
-
-            Arguments =
-                new ReadOnlyCollection<DiscriminatedUnionCaseArgument>(
-                    allArguments.Zip(
-                        Enumerable.Range(0, allArguments.Count),
-                        (s, i) => new DiscriminatedUnionCaseArgument(caseName, i, s)).ToArray());
+            Parameters =
+                parameterTypes.Zip(
+                    Enumerable.Range(0, parameterTypes.Length),
+                    (parametertype, parameterPosition) => new DiscriminatedUnionCaseParameter(caseName, parameterPosition, parametertype)).ToList().AsReadOnly();
 
             CaseName = caseName;
         }

@@ -15,13 +15,13 @@ namespace CSharpTranslator.Tests.Generator
             var du = new DiscriminatedUnion(
                 typeName,
                 new SimpleDiscriminatedUnionCase("Point", typeName),
-                new DiscriminatedUnionCaseWithArguments("Line", typeName, Tuple.Create("Length", "int")),
-                new DiscriminatedUnionCaseWithArguments(
+                new ParameterisedDiscriminatedUnionCase("Line", typeName, "int"),
+                new ParameterisedDiscriminatedUnionCase(
                     "Square",
                     typeName,
                     Tuple.Create("Width", "int"),
                     Tuple.Create("Height", "int")),
-                new DiscriminatedUnionCaseWithArguments(
+                new ParameterisedDiscriminatedUnionCase(
                     "Cube",
                     typeName,
                     Tuple.Create("Width", "int"),
@@ -40,7 +40,7 @@ namespace CSharpTranslator.Tests.Generator
             var du = new DiscriminatedUnion(
                 typeName,
                 new SimpleDiscriminatedUnionCase("None", typeName),
-                new DiscriminatedUnionCaseWithArguments("Some", typeName, "object"));
+                new ParameterisedDiscriminatedUnionCase("Some", typeName, "object"));
 
             var typeDefinition = du.ToString();
             WriteToFile(typeName, typeDefinition);
@@ -49,7 +49,7 @@ namespace CSharpTranslator.Tests.Generator
         private void WriteToFile(string typeName, string typeDefinition)
         {
             var fileName =
-                $@"C:\Repositories\Richiban\CSharpTranslator\CSharpTranslator.Tests.Unit\Output\{typeName}.cs";
+                $@"C:\Users\Richard\Projects\Richiban.CSharpTranslator\CSharpTranslator.Tests.Unit\Output\{typeName}.cs";
 
             var fileContents =
                 $@"using System;

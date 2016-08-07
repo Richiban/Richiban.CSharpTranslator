@@ -8,28 +8,28 @@ namespace CSharpTranslator
 {
     public class DestructureMethodCollection
     {
-        private ValueDestructureMethodParameter Value(DiscriminatedUnionCaseArgument arg)
+        private ValueDestructureMethodParameter Value(DiscriminatedUnionCaseParameter arg)
         {
             return new ValueDestructureMethodParameter(arg.Position, arg.Name, arg.Type);
         }
 
-        private OutDestructureMethodParameter Out(DiscriminatedUnionCaseArgument arg)
+        private OutDestructureMethodParameter Out(DiscriminatedUnionCaseParameter arg)
         {
             return new OutDestructureMethodParameter(arg.Position, arg.Name, arg.Type);
         }
 
         public DestructureMethodCollection(DiscriminatedUnionCaseArgumentCollection arguments)
         {
-            DestructureMethods = GetDestructureMethods(arguments.CaseName, arguments.Arguments).ToList().AsReadOnly();
+            DestructureMethods = GetDestructureMethods(arguments.CaseName, arguments.Parameters).ToList().AsReadOnly();
         }
 
         public IReadOnlyCollection<DestructureMethod> DestructureMethods { get; }
 
         private IEnumerable<DestructureMethod> GetDestructureMethods(
             string caseName,
-            IReadOnlyCollection<DiscriminatedUnionCaseArgument> arguments)
+            IReadOnlyCollection<DiscriminatedUnionCaseParameter> arguments)
         {
-            var fs = new Func<DiscriminatedUnionCaseArgument, DestructureMethodParameter>[] { Value, Out };
+            var fs = new Func<DiscriminatedUnionCaseParameter, DestructureMethodParameter>[] { Value, Out };
             var results = EnumerateOutcomes(fs, arguments.Count);
 
             foreach (var result in results)
@@ -39,10 +39,10 @@ namespace CSharpTranslator
             }
         }
 
-        public IEnumerable<IEnumerable<Func<DiscriminatedUnionCaseArgument, DestructureMethodParameter>>>
+        public IEnumerable<IEnumerable<Func<DiscriminatedUnionCaseParameter, DestructureMethodParameter>>>
             RecEnumerateOutcomes(
-            ImmutableStack<Func<DiscriminatedUnionCaseArgument, DestructureMethodParameter>> results,
-            Func<DiscriminatedUnionCaseArgument, DestructureMethodParameter>[] resultTypes,
+            ImmutableStack<Func<DiscriminatedUnionCaseParameter, DestructureMethodParameter>> results,
+            Func<DiscriminatedUnionCaseParameter, DestructureMethodParameter>[] resultTypes,
             int numIterations)
         {
             if (results.Count() >= numIterations)
@@ -61,12 +61,12 @@ namespace CSharpTranslator
             }
         }
 
-        public IEnumerable<IEnumerable<Func<DiscriminatedUnionCaseArgument, DestructureMethodParameter>>>
+        public IEnumerable<IEnumerable<Func<DiscriminatedUnionCaseParameter, DestructureMethodParameter>>>
             EnumerateOutcomes(
-                Func<DiscriminatedUnionCaseArgument, DestructureMethodParameter>[] resultTypes,
+                Func<DiscriminatedUnionCaseParameter, DestructureMethodParameter>[] resultTypes,
                 int numIterations)
         {
-            var results = ImmutableStack<Func<DiscriminatedUnionCaseArgument, DestructureMethodParameter>>.Empty;
+            var results = ImmutableStack<Func<DiscriminatedUnionCaseParameter, DestructureMethodParameter>>.Empty;
 
             var outcomes = RecEnumerateOutcomes(results, resultTypes, numIterations);
 

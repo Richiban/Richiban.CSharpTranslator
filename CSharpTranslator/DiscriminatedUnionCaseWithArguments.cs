@@ -3,30 +3,28 @@ using System.Linq;
 
 namespace CSharpTranslator
 {
-    public class DiscriminatedUnionCaseWithArguments : DiscriminatedUnionCase
+    public class ParameterisedDiscriminatedUnionCase : DiscriminatedUnionCase
     {
-        public DiscriminatedUnionCaseArgumentCollection Arguments { get; }
+        public DiscriminatedUnionCaseArgumentCollection Parameters { get; }
         public DestructureMethodCollection DestructureMethods { get; }
 
-        public DiscriminatedUnionCaseWithArguments(
+        public ParameterisedDiscriminatedUnionCase(
             string caseName,
             string typeName,
-            Tuple<string, string> firstArgumentNameAndType,
-            params Tuple<string, string>[] furtherArguments) : base(caseName, typeName)
+            params Tuple<string, string>[] parameters) : base(caseName, typeName)
         {
-            Arguments = new NamedDiscriminatedUnionCaseArgumentCollection(caseName, firstArgumentNameAndType, furtherArguments);
+            Parameters = new NamedDiscriminatedUnionCaseArgumentCollection(caseName, parameters);
 
-            DestructureMethods = new DestructureMethodCollection(Arguments);
+            DestructureMethods = new DestructureMethodCollection(Parameters);
         }
 
-        public DiscriminatedUnionCaseWithArguments(
+        public ParameterisedDiscriminatedUnionCase(
             string caseName,
             string typeName,
-            string firstArgumentType,
-            params string[] furtherArguments) : base(caseName, typeName)
+            params string[] parameterTypes) : base(caseName, typeName)
         {
-            Arguments = new AnonymousDiscriminatedUnionCaseArgumentCollection(caseName, firstArgumentType, furtherArguments);
-            DestructureMethods = new DestructureMethodCollection(Arguments);
+            Parameters = new AnonymousDiscriminatedUnionCaseParameterCollection(caseName, parameterTypes);
+            DestructureMethods = new DestructureMethodCollection(Parameters);
         }
 
         public override string CreateAndDestructureMethod()
@@ -38,23 +36,23 @@ namespace CSharpTranslator
         private string CreateMethod
             => $@"	public static {TypeName} {CaseName}({Definitions}) => new {TypeName}(Case.{CaseName}, {Names});";
 
-        private string Names => String.Join(", ", Arguments.Arguments.Select(arg => arg.Name));
+        private string Names => String.Join(", ", Parameters.Parameters.Select(arg => arg.Name));
 
-        private string Definitions => String.Join(", ", Arguments.Arguments.Select(arg => arg.Definition));
+        private string Definitions => String.Join(", ", Parameters.Parameters.Select(arg => arg.Definition));
 
-        private string OutVariableDefinitions => String.Join(", ", Arguments.Arguments.Select(arg => arg.OutParameterDeclaration));
+        private string OutVariableDefinitions => String.Join(", ", Parameters.Parameters.Select(arg => arg.OutParameterDeclaration));
 
-        private string OtherOutVariableUsages => String.Join(", ", Arguments.Arguments.Select(arg => arg.OtherOutVariableUsage));
-        private string OutVariableUsages => String.Join(", ", Arguments.Arguments.Select(arg => arg.OutVariableUsage));
+        private string OtherOutVariableUsages => String.Join(", ", Parameters.Parameters.Select(arg => arg.OtherOutVariableUsage));
+        private string OutVariableUsages => String.Join(", ", Parameters.Parameters.Select(arg => arg.OutVariableUsage));
 
         private string OtherOutVariableReferences
-            => String.Join(", ", Arguments.Arguments.Select(arg => arg.OtherOutVariableReference));
+            => String.Join(", ", Parameters.Parameters.Select(arg => arg.OtherOutVariableReference));
 
         private string OutVariableDeclarations
-            => String.Join("", Arguments.Arguments.Select(arg => arg.OutArgumentDeclaration));
+            => String.Join("", Parameters.Parameters.Select(arg => arg.OutArgumentDeclaration));
 
         private string OtherOutVariableDeclarations()
-            => String.Join("", Arguments.Arguments.Select(arg => arg.OtherOutVariableDeclaration));
+            => String.Join("", Parameters.Parameters.Select(arg => arg.OtherOutVariableDeclaration));
 
         public override string GetEqualityComparison(string otherVariableName)
             =>
@@ -72,6 +70,6 @@ namespace CSharpTranslator
 			
 ";
 
-        public string ToStrings => String.Join(", ", Arguments.Arguments.Select(arg => arg.ToStringRepresentation));
+        public string ToStrings => String.Join(", ", Parameters.Parameters.Select(arg => arg.ToStringRepresentation));
     }
 }
